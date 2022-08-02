@@ -1,4 +1,5 @@
 import joi from 'joi';
+import connection from '../database/postgres.js';
 
 export async function validateUrl (req, res, next) {
 
@@ -13,4 +14,25 @@ export async function validateUrl (req, res, next) {
     }
 
     next();
+}
+
+export async function verifyIfUrlExists (req, res, next) {
+
+    const urlId = req.params.id;
+    
+    try {
+        
+        const { rows: [ url ]} = await connection.query(`
+            SELECT * FROM urls
+            WHERE id = $1
+        `, [urlId]);
+        if(!url) return res.sendStatus(404);
+    
+        res.locals.url = url;
+
+        next();
+
+    } catch (error) {
+        res.sendStatus(500);
+    }
 }

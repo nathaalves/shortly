@@ -28,3 +28,11 @@ export async function handleUrl (req, res) {
         res.sendStatus(500);
     }
 }
+
+export async function getUrl (req, res) {
+
+    const url = res.locals.url;
+    delete url.userId;
+
+    res.status(200).send(url);
+}
