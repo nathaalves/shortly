@@ -12,6 +12,11 @@ const connection = new Pool({
     }
 });
 
+
+// await connection.query('DROP TABLE sessions')
+// await connection.query('DROP TABLE urls')
+// await connection.query('DROP TABLE users')
+
 await connection.query(`
     CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -31,7 +36,14 @@ await connection.query(`
     )
 `)
 
-// await connection.query('DROP TABLE users')
-// await connection.query('DROP TABLE sessions')
+await connection.query(`
+    CREATE TABLE IF NOT EXISTS urls (
+        id SERIAL PRIMARY KEY,
+        url TEXT NOT NULL,
+        shortUrl VARCHAR(21) NOT NULL,
+        "userId" INTEGER NOT NULL REFERENCES users(id),
+        "createdAt" DATE NOT NULL
+    )
+`)
 
 export default connection;

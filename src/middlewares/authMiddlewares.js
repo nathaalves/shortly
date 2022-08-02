@@ -35,3 +35,16 @@ export async function checkCredentials (req, res, next) {
         res.sendStatus(500);
     }
 }
+
+export async function validateToken (req, res, next) {
+
+    const { authorization } = req.headers;
+    if (!authorization) return res.sendStatus(401);
+
+    const [,token] = authorization.split(' ');
+    if(!token) return res.sendStatus(401);
+
+    res.locals.token = token;
+
+    next();
+}
