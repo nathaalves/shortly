@@ -22,6 +22,16 @@ await connection.query(`
     )
 `)
 
+await connection.query(`
+    CREATE TABLE IF NOT EXISTS sessions (
+        id SERIAL PRIMARY KEY,
+        "userId" INTEGER NOT NULL REFERENCES users(id),
+        token TEXT NOT NULL,
+        "createdAt" DATE NOT NULL
+    )
+`)
+
 // await connection.query('DROP TABLE users')
+// await connection.query('DROP TABLE sessions')
 
 export default connection;
