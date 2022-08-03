@@ -1,6 +1,7 @@
-import connection from "../database/postgres.js";
 import { hash } from "bcrypt";
 import dayjs from "dayjs";
+
+import dbRequest from '../database/dbRequest.js'
 
 export default async function signUp (req, res) {
 
@@ -10,11 +11,7 @@ export default async function signUp (req, res) {
     
     try {
         
-        await connection.query(`
-            INSERT INTO users (id, name, email, password, "createdAt") 
-            VALUES (default, $1, $2, $3, $4)`,
-            [name, email, pwdHash, createdAt]
-        );
+        await dbRequest.insertUser(name, email, pwdHash, createdAt);
 
         res.sendStatus(201);
 

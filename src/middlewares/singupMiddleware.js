@@ -1,5 +1,5 @@
 import joi from 'joi';
-import connection from '../database/postgres.js';
+import dbRequest from '../database/dbRequest.js';
 
 export default async function validateInformations (req, res, next) {
 
@@ -22,12 +22,8 @@ export default async function validateInformations (req, res, next) {
 
     try {
 
-        const { rows: [ existingUser ] } = await connection.query(`
-            SELECT * FROM users 
-            WHERE email = $1
-        `,[email]);
-
-        if (existingUser) return res.sendStatus(409);
+        const isRegistered = await dbRequest.isUserAlredyRegistered(email);
+        if (isRegistered) return res.sendStatus(409);
     
         next();
         
