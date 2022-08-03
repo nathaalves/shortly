@@ -1,4 +1,4 @@
-import connection from "../database/postgres.js";
+import dbRequest from '../database/dbRequest.js';
 import pkg from 'jsonwebtoken';
 import { compare } from "bcrypt";
 import joi from "joi";
@@ -17,17 +17,13 @@ export async function checkCredentials (req, res, next) {
     
     try {
         
-        const { rows: [ existingUser ] } = await connection.query(`
-            SELECT * FROM users 
-            WHERE email = $1`, 
-            [email]
-        );
-        if (!existingUser) return res.sendStatus(401);
-
-        const passwordMatch = await compare(password, existingUser.password);
+        const registeredUser = await dbRequest.findUserByEmail(email);
+        if (!registeredUser) return res.sendStatus(401);
+        
+        const passwordMatch = await compare(password, registeredUser.password);
         if (!passwordMatch) return res.sendStatus(401);
         
-        const { id, name } = existingUser;
+        const { id, name } = registeredUser;
         res.locals.user = { id, name };
         
         next();

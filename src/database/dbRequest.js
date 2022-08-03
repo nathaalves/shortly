@@ -10,16 +10,22 @@ const dbRequest = {
         );
     },
 
-    isUserAlredyRegistered: async function (email) {
+    findUserByEmail: async function (email) {
 
-        const { rows: [ existingUser ] } = await connection.query(`
+        const { rows: [ user ] } = await connection.query(`
             SELECT * FROM users 
             WHERE email = $1
         `,[email]);
-        console.log(existingUser)
-        if (existingUser) return true;
-        console.log(1)
-        return false
+
+        return user
+    },
+
+    createSession: async function (id, token, createdAt) {
+        await connection.query(`
+            INSERT INTO sessions (id, "userId", token, "createdAt") 
+            VALUES (default, $1, $2, $3)`, 
+            [id, token, createdAt]
+        );
     }
 }
 

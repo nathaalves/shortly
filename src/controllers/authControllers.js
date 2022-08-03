@@ -1,4 +1,4 @@
-import connection from "../database/postgres.js";
+import dbRequest from '../database/dbRequest.js'
 import pkg from "jsonwebtoken";
 import dayjs from "dayjs";
 
@@ -19,11 +19,7 @@ export async function signIn (req, res) {
             }
         );
 
-        await connection.query(`
-            INSERT INTO sessions (id, "userId", token, "createdAt") 
-            VALUES (default, $1, $2, $3)`, 
-            [id, token, createdAt]
-        );
+        await dbRequest.createSession(id, token, createdAt);
         
         res.status(200).send({ token })
 
