@@ -17,7 +17,7 @@ export async function checkCredentials (req, res, next) {
     
     try {
         
-        const registeredUser = await dbRequest.findUserByEmail(email);
+        const registeredUser = await dbRequest.findUser(email);
         if (!registeredUser) return res.sendStatus(401);
         
         const passwordMatch = await compare(password, registeredUser.password);

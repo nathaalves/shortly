@@ -22,7 +22,7 @@ export default async function validateInformations (req, res, next) {
 
     try {
 
-        const isRegistered = await dbRequest.findUserByEmail(email);
+        const isRegistered = await dbRequest.findUser(email);
         if (isRegistered) return res.sendStatus(409);
     
         next();

@@ -11,7 +11,7 @@ export default async function signUp (req, res) {
     
     try {
         
-        await dbRequest.insertUser(name, email, pwdHash, createdAt);
+        await dbRequest.createUser(name, email, pwdHash, createdAt);
 
         res.sendStatus(201);
 

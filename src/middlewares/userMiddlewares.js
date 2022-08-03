@@ -1,4 +1,4 @@
-import connection from "../database/postgres.js";
+import dbRequest from "../database/dbRequest.js";
 
 export async function checkUserExists (req, res, next) {
 
@@ -6,10 +6,7 @@ export async function checkUserExists (req, res, next) {
     
     try {
         
-        const { rows: [ user ]} = await connection.query(`
-            SELECT * FROM users
-            WHERE id = $1
-        `, [id]);
+        const user = await dbRequest.findUser(id);
         if (!user) return res.sendStatus(404);
 
         next();

@@ -1,5 +1,4 @@
-import connection from "../database/postgres.js";
-
+import dbRequest from "../database/dbRequest.js";
 
 export async function getUserInformations (req, res) {
 
@@ -7,23 +6,12 @@ export async function getUserInformations (req, res) {
 
     try {
         
-        const { rows: shortenedUrls } = await connection.query(`
-            SELECT id, "shortUrl", url, "visitCount"
-            FROM urls
-            WHERE "userId" = $1
-        `, [id]);
-
-        const { rows: [{ sum: visitCount }]} = await connection.query(`
-            SELECT SUM("visitCount")::INTEGER
-            FROM urls
-            WHERE "userId" = $1
-        `, [id]);
+        const userInformations = await dbRequest.userInformations(id);
 
         res.status(200).send({
             id,
             name,
-            visitCount,
-            shortenedUrls
+            ...userInformations
         });
 
     } catch (error) {
