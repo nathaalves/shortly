@@ -1,5 +1,5 @@
+import dbRequest from '../database/dbRequest.js';
 import joi from 'joi';
-import connection from '../database/postgres.js';
 
 export async function validateUrl (req, res, next) {
 
@@ -18,36 +18,18 @@ export async function validateUrl (req, res, next) {
 
 export async function verifyIfUrlExists (req, res, next) {
 
-    const urlId = req.params.id;
-    const shortUrl = req.params.shortUrl;
+    const {id, shortUrl} = req.params;
     
-    let url = null;
-
+    let value = null;
+    if (id) value = Number(id);
+    if (shortUrl) value = shortUrl;
+    
     try {
         
-        if (urlId) {
-
-            const { rows: [ data ]} = await connection.query(`
-                SELECT * FROM urls
-                WHERE id = $1
-            `, [urlId]);
-
-            url = data;
-        }
-
-        if (shortUrl) {
-            
-            const { rows: [ data ]} = await connection.query(`
-                SELECT * FROM urls
-                WHERE "shortUrl" = $1
-            `, [shortUrl]);
-            
-            url = data;
-        }
+        const urlFound = await dbRequest.findUrl(value);
+        if(!urlFound) return res.sendStatus(404);
         
-        if(!url) return res.sendStatus(404);
-    
-        res.locals.url = url;
+        res.locals.url = urlFound;
         
         next();
 

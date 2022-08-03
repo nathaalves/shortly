@@ -26,6 +26,29 @@ const dbRequest = {
             VALUES (default, $1, $2, $3)`, 
             [id, token, createdAt]
         );
+    },
+
+    findUrl: async function (value) {
+        
+        if (typeof(value) === 'number') {
+            
+            const { rows: [ url ]} = await connection.query(`
+                SELECT * FROM urls
+                WHERE id = $1
+            `, [value]);
+
+            return url;
+        }
+
+        if (typeof(value) === 'string') {
+            
+            const { rows: [ url ]} = await connection.query(`
+                SELECT * FROM urls
+                WHERE "shortUrl" = $1
+            `, [value]);
+
+            return url;
+        }
     }
 }
 
