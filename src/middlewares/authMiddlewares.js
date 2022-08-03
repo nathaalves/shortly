@@ -45,6 +45,6 @@ export async function validateToken (req, res, next) {
     if(!token) return res.sendStatus(401);
 
     res.locals.token = token;
-
+    
     next();
 }

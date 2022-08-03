@@ -55,3 +55,16 @@ export async function verifyIfUrlExists (req, res, next) {
         res.sendStatus(500);
     }
 }
+
+export async function checkUrlBelongsUser (req, res, next) {
+
+    const { token, url } = res.locals;
+    
+    const user = JSON.parse(
+        Buffer(token.split('.')[1], 'base64').toString('utf-8')
+    );
+
+    if (user.id !== url.userId) return res.sendStatus(401);
+
+    next();
+}

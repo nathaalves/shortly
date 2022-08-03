@@ -54,3 +54,20 @@ export async function openUrl (req, res) {
         res.sendStatus(500);
     }
 }
+
+export async function deleteUrl (req, res) {
+
+    const { id } = res.locals.url;
+    
+    try {
+        
+        await connection.query(`
+            DELETE FROM urls WHERE id = $1
+        `, [id]);
+
+        res.sendStatus(204);
+
+    } catch (error) {
+        res.sendStatus(500);
+    }
+}
