@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import connection from "../database/postgres.js";
 import dayjs from "dayjs";
+import dbRequest from "../database/dbRequest.js";
 
 export async function handleUrl (req, res) {
     
@@ -11,10 +12,7 @@ export async function handleUrl (req, res) {
     
     try {
 
-        await connection.query(`
-            INSERT INTO urls (id, url, "shortUrl", "userId", "createdAt") 
-            VALUES (default, $1, $2, $3, $4)
-        `, [url, shortUrl, user.id, createdAt]);
+        await dbRequest.createUrl(url, shortUrl, user.id, createdAt);
 
         res.sendStatus(201);
 
@@ -36,11 +34,8 @@ export async function openUrl (req, res) {
     const { id, url } = res.locals.url;
     
     try {
-        await connection.query(`
-            UPDATE urls 
-            SET "visitCount" = "visitCount" + 1 
-            WHERE id = $1
-        `,[id]);
+        
+        await dbRequest.updateCount(id);
         
         res.redirect(200, url);
 
@@ -55,9 +50,7 @@ export async function deleteUrl (req, res) {
     
     try {
         
-        await connection.query(`
-            DELETE FROM urls WHERE id = $1
-        `, [id]);
+        await dbRequest.deleteUrl(id);
 
         res.sendStatus(204);
 

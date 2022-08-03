@@ -104,6 +104,30 @@ const dbRequest = {
         `);
         
         return ranking;
+    },
+
+    createUrl: async function (url, shortUrl, userId, createdAt) {
+
+        await connection.query(`
+            INSERT INTO urls (id, url, "shortUrl", "userId", "createdAt") 
+            VALUES (default, $1, $2, $3, $4)
+        `, [url, shortUrl, userId, createdAt]);
+    },
+
+    updateCount: async function (urlId) {
+
+        await connection.query(`
+            UPDATE urls 
+            SET "visitCount" = "visitCount" + 1 
+            WHERE id = $1
+        `,[urlId]);
+    },
+
+    deleteUrl: async function (urlId) {
+
+        await connection.query(`
+            DELETE FROM urls WHERE id = $1
+        `, [urlId]);
     }
 }
 
