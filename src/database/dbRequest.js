@@ -3,6 +3,7 @@ import connection from "./postgres.js";
 const dbRequest = {
 
     createUser: async function (name, email, pwdHash, createdAt) {
+
         await connection.query(`
             INSERT INTO users (id, name, email, password, "createdAt") 
             VALUES (default, $1, $2, $3, $4)`,
@@ -12,7 +13,6 @@ const dbRequest = {
 
     findUser: async function (value) {
 
-        
         if (typeof(value) === 'number') {
             
             const { rows: [ user ]} = await connection.query(`
@@ -30,11 +30,12 @@ const dbRequest = {
             WHERE email = $1
             `,[value]);
 
-            return user
+            return user;
         }
     },
 
     createSession: async function (id, token, createdAt) {
+
         await connection.query(`
             INSERT INTO sessions (id, "userId", token, "createdAt") 
             VALUES (default, $1, $2, $3)`, 
@@ -82,10 +83,28 @@ const dbRequest = {
         return {
             shortenedUrls,
             visitCount
-        }
+        };
 
+    },
+
+    getRanking: async function () {
+
+        const { rows: ranking } = await connection.query(`
+            SELECT 
+                users.id AS id, 
+                users.name AS name, 
+                COUNT(urls)::INTEGER AS "linksCount", 
+                SUM("visitCount")::INTEGER AS "visitCount"
+            FROM users
+            JOIN urls
+            ON users.id = urls."userId"
+            GROUP BY users.id
+            ORDER BY "visitCount" DESC
+            LIMIT 10
+        `);
+        
+        return ranking;
     }
-    
 }
 
 export default dbRequest;
