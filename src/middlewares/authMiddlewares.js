@@ -1,4 +1,5 @@
 import connection from "../database/postgres.js";
+import pkg from 'jsonwebtoken';
 import { compare } from "bcrypt";
 import joi from "joi";
 
@@ -44,7 +45,17 @@ export async function validateToken (req, res, next) {
     const [,token] = authorization.split(' ');
     if(!token) return res.sendStatus(401);
 
-    res.locals.token = token;
+    const { verify } = pkg;
+
+    try {
+
+        const user = verify(token, process.env.JWT_SECRET);
+        res.locals.user = user;
+        res.locals.token = token;
     
-    next();
+        next();
+
+    } catch (error) {
+        res.sendStatus(401);
+    }    
 }
