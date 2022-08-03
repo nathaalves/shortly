@@ -8,7 +8,7 @@ export async function handleUrl (req, res) {
     const { url } = req.body;
     const shortUrl = nanoid();
     const createdAt = dayjs().format('YYYY-MM-DD');
-    console.log(user)
+    
     try {
 
         await connection.query(`
