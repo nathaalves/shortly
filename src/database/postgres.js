@@ -40,8 +40,9 @@ await connection.query(`
     CREATE TABLE IF NOT EXISTS urls (
         id SERIAL PRIMARY KEY,
         url TEXT NOT NULL,
-        shortUrl VARCHAR(21) NOT NULL,
+        "shortUrl" VARCHAR(21) NOT NULL,
         "userId" INTEGER NOT NULL REFERENCES users(id),
+        "visitCount" INTEGER NOT NULL DEFAULT 0,
         "createdAt" DATE NOT NULL
     )
 `)

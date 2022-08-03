@@ -19,17 +19,36 @@ export async function validateUrl (req, res, next) {
 export async function verifyIfUrlExists (req, res, next) {
 
     const urlId = req.params.id;
+    const shortUrl = req.params.shortUrl;
     
+    let url = null;
+
     try {
         
-        const { rows: [ url ]} = await connection.query(`
-            SELECT * FROM urls
-            WHERE id = $1
-        `, [urlId]);
+        if (urlId) {
+
+            const { rows: [ data ]} = await connection.query(`
+                SELECT * FROM urls
+                WHERE id = $1
+            `, [urlId]);
+
+            url = data;
+        }
+
+        if (shortUrl) {
+            
+            const { rows: [ data ]} = await connection.query(`
+                SELECT * FROM urls
+                WHERE "shortUrl" = $1
+            `, [shortUrl]);
+            
+            url = data;
+        }
+        
         if(!url) return res.sendStatus(404);
     
         res.locals.url = url;
-
+        
         next();
 
     } catch (error) {
