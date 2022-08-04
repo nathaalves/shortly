@@ -2,12 +2,12 @@ import connection from "./postgres.js";
 
 const dbRequest = {
 
-    createUser: async function (name, email, pwdHash, createdAt) {
+    createUser: async function (name, email, pwdHash) {
 
         await connection.query(`
             INSERT INTO users (id, name, email, password, "createdAt") 
-            VALUES (default, $1, $2, $3, $4)`,
-            [name, email, pwdHash, createdAt]
+            VALUES (default, $1, $2, $3, default)`,
+            [name, email, pwdHash]
         );
     },
 
@@ -34,12 +34,12 @@ const dbRequest = {
         }
     },
 
-    createSession: async function (id, token, createdAt) {
+    createSession: async function (id, token) {
 
         await connection.query(`
             INSERT INTO sessions (id, "userId", token, "createdAt") 
-            VALUES (default, $1, $2, $3)`, 
-            [id, token, createdAt]
+            VALUES (default, $1, $2, default)`, 
+            [id, token]
         );
     },
 
@@ -106,12 +106,12 @@ const dbRequest = {
         return ranking;
     },
 
-    createUrl: async function (url, shortUrl, userId, createdAt) {
+    createUrl: async function (url, shortUrl, userId) {
 
         await connection.query(`
             INSERT INTO urls (id, url, "shortUrl", "userId", "createdAt") 
-            VALUES (default, $1, $2, $3, $4)
-        `, [url, shortUrl, userId, createdAt]);
+            VALUES (default, $1, $2, $3, default)
+        `, [url, shortUrl, userId]);
     },
 
     updateCount: async function (urlId) {

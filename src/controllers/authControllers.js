@@ -1,11 +1,9 @@
 import dbRequest from '../database/dbRequest.js'
 import pkg from "jsonwebtoken";
-import dayjs from "dayjs";
 
 export async function signIn (req, res) {
     
     const { id, name } = res.locals.user;
-    const createdAt = dayjs().format('YYYY-MM-DD');
     const { sign } = pkg;
     
     try {
@@ -19,7 +17,7 @@ export async function signIn (req, res) {
             }
         );
 
-        await dbRequest.createSession(id, token, createdAt);
+        await dbRequest.createSession(id, token);
         
         res.status(200).send({ token })
 

@@ -1,6 +1,4 @@
 import { nanoid } from "nanoid";
-import connection from "../database/postgres.js";
-import dayjs from "dayjs";
 import dbRequest from "../database/dbRequest.js";
 
 export async function handleUrl (req, res) {
@@ -8,11 +6,10 @@ export async function handleUrl (req, res) {
     const { user } = res.locals;
     const { url } = req.body;
     const shortUrl = nanoid();
-    const createdAt = dayjs().format('YYYY-MM-DD');
     
     try {
 
-        await dbRequest.createUrl(url, shortUrl, user.id, createdAt);
+        await dbRequest.createUrl(url, shortUrl, user.id);
 
         res.sendStatus(201);
 
