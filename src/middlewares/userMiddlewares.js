@@ -1,4 +1,4 @@
-import dbRequest from "../database/dbRequest.js";
+import dbRequest from "../repository/dbRequests/dbRequest.js";
 
 export async function checkUserExists (req, res, next) {
 

@@ -1,4 +1,4 @@
-import dbRequest from '../database/dbRequest.js'
+import dbRequest from '../repository/dbRequests/dbRequest.js'
 import pkg from "jsonwebtoken";
 
 export async function signIn (req, res) {

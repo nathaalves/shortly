@@ -1,4 +1,4 @@
-import dbRequest from '../database/dbRequest.js';
+import dbRequest from '../repository/dbRequests/dbRequest.js';
 import pkg from 'jsonwebtoken';
 import { compare } from "bcrypt";
 import joi from "joi";

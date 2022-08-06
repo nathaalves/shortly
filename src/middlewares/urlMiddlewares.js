@@ -1,4 +1,4 @@
-import dbRequest from '../database/dbRequest.js';
+import dbRequest from '../repository/dbRequests/dbRequest.js';
 import joi from 'joi';
 
 export async function validateUrl (req, res, next) {

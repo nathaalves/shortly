@@ -1,5 +1,5 @@
 import joi from 'joi';
-import dbRequest from '../database/dbRequest.js';
+import dbRequest from '../repository/dbRequests/dbRequest.js';
 
 export default async function validateInformations (req, res, next) {
 
