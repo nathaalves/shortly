@@ -5,6 +5,10 @@ import { checkUserExists } from "../middlewares/userMiddlewares.js";
 
 const userRoutes = Router();
 
-userRoutes.get('/users/me', validateToken, checkUserExists, getUserInformations);
+userRoutes.get('/users/me', 
+    validateToken, 
+    checkUserExists, 
+    getUserInformations
+);
 
 export default userRoutes;
