@@ -10,7 +10,7 @@ export async function checkCredentials (req, res, next) {
         password: joi.string().required()
     });
 
-    const { error } = signinSchema.validate(req.body);
+    const { error } = signinSchema.validate(req.body, {abortEarly: false});
     if (error) return res.status(422).send(error.details.map( err => err.message))
     
     const { email, password } = req.body;

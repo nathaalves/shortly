@@ -15,7 +15,7 @@ const urlRequests = {
         if (typeof(value) === 'number') {
             
             const { rows: [ url ]} = await connection.query(`
-                SELECT * FROM urls
+                SELECT id, "shortUrl", url, "userId" FROM urls
                 WHERE id = $1
             `, [value]);
 

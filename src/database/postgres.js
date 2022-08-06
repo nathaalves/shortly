@@ -12,7 +12,6 @@ const connection = new Pool({
     }
 });
 
-
 // await connection.query('DROP TABLE sessions')
 // await connection.query('DROP TABLE urls')
 // await connection.query('DROP TABLE users')

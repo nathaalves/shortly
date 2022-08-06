@@ -8,10 +8,10 @@ const rankingRequests = {
             SELECT 
                 users.id AS id, 
                 users.name AS name, 
-                COUNT(urls)::INTEGER AS "linksCount", 
-                SUM("visitCount")::INTEGER AS "visitCount"
+                COALEsCE(COUNT(urls)::INTEGER,0) AS "linksCount", 
+                COALEsCE(SUM("visitCount")::INTEGER,0) AS "visitCount"
             FROM users
-            JOIN urls
+            LEFT JOIN urls
             ON users.id = urls."userId"
             GROUP BY users.id
             ORDER BY "visitCount" DESC
