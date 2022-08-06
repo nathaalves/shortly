@@ -25,23 +25,31 @@ const userRequests = {
         }
     },
 
-    userInformations: async function (id) {
+    userInformations: async function (userId) {
 
         const { rows: shortenedUrls } = await connection.query(`
             SELECT id, "shortUrl", url, "visitCount"
             FROM urls
             WHERE "userId" = $1
-        `, [id]);
+        `, [userId]);
 
-        const { rows: [{ sum: visitCount }]} = await connection.query(`
-            SELECT SUM("visitCount")::INTEGER
-            FROM urls
+        const { rows: [{ id, name, visitCount }]} = await connection.query(`
+            SELECT 
+                users.id, 
+                users.name, 
+                SUM(urls."visitCount")::INTEGER AS "visitCount"
+            FROM users
+            JOIN urls
+            ON users.id = urls."userId"
             WHERE "userId" = $1
-        `, [id]);
+            GROUP BY users.id
+        `, [userId]);
 
         return {
-            shortenedUrls,
-            visitCount
+            id,
+            name,
+            visitCount,
+            shortenedUrls
         };
     }
 };
