@@ -12,11 +12,7 @@ const connection = new Pool({
     }
 });
 
-// await connection.query('DROP TABLE sessions')
-// await connection.query('DROP TABLE urls')
-// await connection.query('DROP TABLE users')
-
-await connection.query(`
+/* await connection.query(`
     CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
         name VARCHAR(50) NOT NULL,
@@ -44,6 +40,6 @@ await connection.query(`
         "visitCount" INTEGER NOT NULL DEFAULT 0,
         "createdAt" DATE NOT NULL DEFAULT NOW()
     )
-`)
+`) */
 
 export default connection;
